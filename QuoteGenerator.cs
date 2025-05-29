@@ -1,4 +1,5 @@
-﻿using QuoteBot.Models;
+﻿using QuoteBot;
+using QuoteBot.Models;
 using System.Text.Json;
 
 namespace QuoteBot
@@ -7,7 +8,7 @@ namespace QuoteBot
     {
         public static readonly string Url = "https://api.quotable.io/random";
 
-        public static async Task<Quote?> GetRandomQuote()
+        public static async Task<string> GetRandomQuote()
         {
             var handler = new HttpClientHandler
             {
@@ -23,7 +24,19 @@ namespace QuoteBot
                 PropertyNameCaseInsensitive = true
             };
 
-            return JsonSerializer.Deserialize<Quote>(response, options);
+            var quote = JsonSerializer.Deserialize<Quote>(response, options);
+            var quoteText = "";
+
+            if (quote?.Content == null || quote.Author == null)
+            {
+                quoteText = "\"Something went wrong\" - Emad Rahman";
+            }
+            else
+            {
+                quoteText = $"\"{quote.Content}\" - {quote.Author}";
+            }
+
+            return quoteText;
         }
     }
 }

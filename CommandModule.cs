@@ -8,15 +8,7 @@ namespace QuoteBot
         public async Task Quote()
         {
             var quote = await QuoteGenerator.GetRandomQuote();
-
-            if (quote?.Content == null || quote.Author == null)
-            {
-                await RespondAsync("\"Something went wrong\" - Emad Rahman");
-                return;
-            }
-
-            var quoteText = $"\"{quote.Content}\" - {quote.Author}";
-            await RespondAsync(quoteText);
+            await RespondAsync(quote);
         }
     }
 }
